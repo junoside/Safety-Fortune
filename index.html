@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>2026 설날 신년운세</title>
+  <style>
+    :root {
+      --bg:#1a0f0a;
+      --card:#2a1710;
+      --muted:#e6cfae;
+      --text:#fff6e5;
+      --accent:#d4a017; /* gold */
+      --accent2:#b11226; /* red */
+    }
+    html { zoom: 1.1; } /* 약 +10% 확대 */
+    body{
+      margin:0;
+      font-family:"Noto Sans KR", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Apple SD Gothic Neo, sans-serif;
+      background:
+        radial-gradient(1200px 600px at 20% -10%, rgba(212,160,23,.15), transparent 60%),
+        radial-gradient(800px 500px at 90% 10%, rgba(177,18,38,.18), transparent 55%),
+        linear-gradient(180deg, #2b140d, #130905);
+      color:var(--text);
+    }
+    .wrap{ max-width: 980px; margin:0 auto; padding: 32px 20px 70px; }
+    .header{ display:flex; gap:16px; align-items:center; margin-bottom: 22px; }
+    .badge{
+      width:52px; height:52px; border-radius:14px;
+      background: linear-gradient(180deg, rgba(212,160,23,.95), rgba(212,160,23,.7));
+      display:grid; place-items:center;
+      border:1px solid rgba(212,160,23,.8);
+      box-shadow: 0 6px 18px rgba(0,0,0,.35);
+      font-size: 22px;
+    }
+    h1{ font-size: 24px; margin:0; letter-spacing:-0.4px; }
+    .sub{ margin:6px 0 0; color:var(--muted); font-size: 14px; }
+
+    .grid{ display:grid; grid-template-columns: 1fr; gap:16px; }
+    @media (min-width: 900px){ .grid{ grid-template-columns: 400px 1fr; } }
+
+    .card{
+      background:
+        linear-gradient(180deg, rgba(255,246,229,.06), rgba(255,246,229,.02)),
+        var(--card);
+      border:1px solid rgba(212,160,23,.35);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:0 16px 44px rgba(0,0,0,.45);
+      position:relative;
+      overflow:hidden;
+    }
+    .card::after{
+      content:"";
+      position:absolute; inset:auto -40% -60% -40%;
+      height:120%;
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(212,160,23,.06) 0,
+        rgba(212,160,23,.06) 1px,
+        transparent 1px,
+        transparent 8px
+      );
+      pointer-events:none;
+      opacity:.35;
+    }
+
+    label{ display:block; font-size: 14px; color:var(--muted); margin: 12px 0 8px; }
+    input, select{
+      width:100%; box-sizing:border-box;
+      border-radius:14px;
+      border:1px solid rgba(212,160,23,.45);
+      background: rgba(255,246,229,.06);
+      color:var(--text);
+      padding:12px 14px;
+      outline:none;
+      font-size:14px;
+    }
+    input::placeholder{ color: rgba(255,246,229,.55); }
+    input:focus, select:focus{ border-color: rgba(212,160,23,.9); box-shadow:0 0 0 3px rgba(212,160,23,.25); }
+
+    .row{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap:12px; }
+    .row2{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+
+    .btns{ display:flex; gap:12px; margin-top:14px; flex-wrap:wrap; }
+    button{
+      cursor:pointer;
+      border-radius:14px;
+      border:1px solid rgba(212,160,23,.6);
+      padding:12px 16px;
+      font-weight:700;
+      font-size:14px;
+    }
+    .primary{
+      background: linear-gradient(180deg, rgba(177,18,38,.95), rgba(177,18,38,.75));
+      color:#fff6e5;
+      border-color: rgba(177,18,38,.9);
+      box-shadow:0 6px 18px rgba(0,0,0,.35);
+    }
+    .ghost{ background: rgba(255,246,229,.08); color:var(--text); }
+
+    .result h2{ font-size:18px; margin:0 0 10px; }
+    .pill{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:8px 12px; border-radius:999px;
+      border:1px solid rgba(212,160,23,.5);
+      background: rgba(212,160,23,.12);
+      color:var(--muted);
+      font-size:13px;
+    }
+    .fortune{ white-space: pre-wrap; line-height: 1.72; font-size: 15px; }
+    .copyok{ color:#7CFFB2; font-size:12px; display:none; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div class="badge">🧧</div>
+      <div>
+        <h1>2026 설날 신년운세</h1>
+        <p class="sub">이름 · 생년월일 · 키워드를 선택하면 운세가 생성됩니다</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <label>이름</label>
+        <input id="name" placeholder="예: 홍길동" />
+
+        <label>생년월일</label>
+        <div class="row">
+          <input id="by" inputmode="numeric" placeholder="YYYY" maxlength="4" />
+          <input id="bm" inputmode="numeric" placeholder="MM" maxlength="2" />
+          <input id="bd" inputmode="numeric" placeholder="DD" maxlength="2" />
+        </div>
+
+        <div class="row2">
+          <div>
+            <label>핵심 키워드</label>
+            <select id="keyword">
+              <option value="안전">안전</option>
+              <option value="재물운">재물운</option>
+              <option value="신년운">신년운</option>
+              <option value="가정운">가정운</option>
+            </select>
+          </div>
+          <div>
+            <label>생성 모드</label>
+            <select id="mode">
+              <option value="stable">기본(개인별 고정)</option>
+              <option value="fresh">새로 뽑기</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="btns">
+          <button class="primary" onclick="generate()">운세 보기</button>
+          <button class="ghost" onclick="copyResult()">결과 복사</button>
+          <button class="ghost" onclick="resetAll()">초기화</button>
+        </div>
+      </div>
+
+      <div class="card result">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+          <h2 id="title">결과</h2>
+          <span class="pill" id="meta">—</span>
+        </div>
+        <div class="fortune" id="fortune">왼쪽 정보를 입력하고 <b>운세 보기</b>를 눌러주세요.</div>
+        <div class="copyok" id="copyok">✅ 복사되었습니다</div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // --- Seeded RNG ---
+  function hashToSeed(str){
+    let h = 2166136261;
+    for (let i=0;i<str.length;i++){
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return (h >>> 0);
+  }
+  function mulberry32(a){
+    return function(){
+      let t = a += 0x6D2B79F5;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    }
+  }
+  function pick(rng, arr){ return arr[Math.floor(rng()*arr.length)]; }
+  function clamp(n, lo, hi){ return Math.max(lo, Math.min(hi, n)); }
+  function safe(v){ return (v||"").trim(); }
+  function pad2(n){ return String(n).padStart(2,'0'); }
+  function zodiacFromYear(y){
+    const animals = ["원숭이","닭","개","돼지","쥐","소","호랑이","토끼","용","뱀","말","양"];
+    if (!y || y<1900 || y>2099) return "";
+    return animals[y % 12];
+  }
+  function validateBirth(y,m,d){
+    if (!y || !m || !d) return {ok:false, msg:"생년월일을 모두 입력해 주세요."};
+    if (y < 1900 || y > 2099) return {ok:false, msg:"생년(YYYY)을 정확히 입력해 주세요."};
+    if (m < 1 || m > 12) return {ok:false, msg:"월(MM)을 1~12로 입력해 주세요."};
+    if (d < 1 || d > 31) return {ok:false, msg:"일(DD)을 1~31로 입력해 주세요."};
+    const dt = new Date(y, m-1, d);
+    if (dt.getFullYear() !== y || dt.getMonth() !== (m-1) || dt.getDate() !== d) return {ok:false, msg:"유효한 날짜가 아닙니다."};
+    return {ok:true, msg:""};
+  }
+
+  // --- Large content pools for variety ---
+  const metaPhrases = {
+    "안전": ["작은 확인이 큰 사고를 막습니다", "절차가 곧 안전입니다", "오늘의 안전이 내일의 신뢰입니다", "한 번 더 확인하는 해", "기본이 가장 강합니다", "안전 습관이 성과가 되는 해", "멈춤이 최고의 예방입니다", "정리된 동선이 당신을 지킵니다"],
+    "재물운": ["지출 점검이 곧 수익입니다", "작게 쌓아 크게 만듭니다", "기회는 준비된 곳으로 옵니다", "현명한 선택이 빛나는 해", "정리하면 남습니다", "내 기준이 돈을 지킵니다", "선저축이 흐름을 만듭니다", "작은 절약이 큰 여유가 됩니다"],
+    "신년운": ["리듬을 잡으면 흐름이 따라옵니다", "새 시작에 강한 운", "정리할수록 길이 보입니다", "변화에 유연하면 성과가 큽니다", "작은 시작이 큰 변화", "꾸준함이 올해의 힘", "정리 → 실행이 잘 맞는 해", "새 루틴이 당신을 돕습니다"],
+    "가정운": ["대화가 가장 큰 선물입니다", "서로의 루틴을 존중하는 해", "작은 배려가 큰 안정으로", "함께 계획하면 더 편안합니다", "약속이 신뢰가 되는 해", "따뜻한 말이 분위기를 만듭니다", "짧게라도 자주가 중요합니다", "서로의 피로를 이해하는 해"]
+  };
+
+  const openers = {
+    "안전": [
+      "올해는 ‘한 번 더 확인’이 가장 강력한 습관이 되는 해입니다.",
+      "올해는 급할수록 절차가 당신을 지켜주는 흐름입니다.",
+      "올해는 안전을 챙긴 만큼 업무도 매끄럽게 풀립니다.",
+      "올해는 작은 위험요인을 미리 치우는 사람이 편해집니다.",
+      "올해는 체크리스트가 최고의 ‘시간 절약’ 도구가 됩니다.",
+      "올해는 기본 보호구가 ‘최고의 실력’으로 인정받는 흐름입니다.",
+      "올해는 현장의 사소한 이상 신호를 빨리 잡는 사람이 유리합니다.",
+      "올해는 ‘멈춤’이 사고를 막는 결정적 순간이 됩니다.",
+      "올해는 동선·시야·조도 같은 기본 환경이 성과를 좌우합니다.",
+      "올해는 ‘상호 확인’이 가장 확실한 예방책이 됩니다."
+    ],
+    "재물운": [
+      "올해는 ‘새는 돈’만 막아도 체감이 커지는 해입니다.",
+      "올해는 계획적인 소비가 마음의 여유를 만드는 흐름입니다.",
+      "올해는 작은 부수입·절약 포인트가 꾸준히 쌓입니다.",
+      "올해는 비교보다 ‘내 기준’을 세우는 순간 안정됩니다.",
+      "올해는 지출을 정리할수록 기회가 보이는 해입니다.",
+      "올해는 실속 있는 선택이 빛을 보는 흐름입니다.",
+      "올해는 급한 결정 대신 ‘한 번 더 확인’이 돈을 지킵니다.",
+      "올해는 작은 습관(선저축)이 큰 차이를 만듭니다.",
+      "올해는 ‘정리(구독/자동이체)’가 가장 강력한 재테크가 됩니다.",
+      "올해는 과소비보다 ‘분류’가 해결책이 되는 해입니다."
+    ],
+    "신년운": [
+      "올해는 리셋과 재정비에 강한 운이 들어옵니다.",
+      "올해는 정리 → 실행의 순서를 지키면 속도가 붙습니다.",
+      "올해는 새로운 습관 하나가 생활을 바꾸는 해입니다.",
+      "올해는 ‘작게 시작해 크게 키우는’ 흐름이 좋습니다.",
+      "올해는 사람·일·시간을 재배치할수록 편해집니다.",
+      "올해는 작은 성취를 빠르게 쌓는 사람이 유리합니다.",
+      "올해는 ‘정리하는 사람’에게 기회가 모입니다.",
+      "올해는 루틴을 만들면 마음도 안정됩니다.",
+      "올해는 배운 것을 바로 적용할 기회가 자주 옵니다.",
+      "올해는 ‘지속’이 성패를 가르는 흐름입니다."
+    ],
+    "가정운": [
+      "올해는 관계가 안정될수록 생활도 편해지는 해입니다.",
+      "올해는 가족과의 약속을 ‘작게라도 자주’ 지키면 좋습니다.",
+      "올해는 말보다 ‘작은 배려’가 크게 통하는 흐름입니다.",
+      "올해는 루틴을 맞추는 대화가 관계를 부드럽게 합니다.",
+      "올해는 함께 계획하는 시간이 안정감을 키웁니다.",
+      "올해는 서로의 피로를 이해할수록 갈등이 줄어듭니다.",
+      "올해는 분위기를 바꾸는 열쇠가 ‘한 마디’에 있습니다.",
+      "올해는 가족의 시간을 조금만 더 확보하면 좋아집니다.",
+      "올해는 역할을 미리 조율할수록 마음이 편해집니다.",
+      "올해는 ‘짧게라도 자주’가 관계운을 올려줍니다."
+    ]
+  };
+
+  const sections = {
+    "안전": {
+      titles: ["① 전체 흐름", "② 실천 팁", "③ 주의 포인트", "④ 오늘의 한 줄"],
+      flow: [
+        "안전 이슈는 ‘큰 사건’보다 ‘작은 누락’에서 시작됩니다. 올해는 누락을 줄이는 습관이 핵심입니다.",
+        "올해는 장비·보호구 상태를 평소보다 자주 확인하면 사고 가능성이 눈에 띄게 낮아집니다.",
+        "올해는 ‘익숙함’이 방심으로 바뀌지 않도록, 작업 전 30초 점검이 큰 차이를 만듭니다.",
+        "올해는 팀원 간 상호 확인이 가장 확실한 예방책이 됩니다.",
+        "올해는 야간/저조도 환경에서 조도 확보가 중요한 변수가 됩니다.",
+        "올해는 통로·출입문 주변처럼 동선이 겹치는 구간 관리가 특히 중요합니다.",
+        "올해는 표지·도색·가림막 같은 ‘시인성’이 안전을 좌우합니다.",
+        "올해는 “멈추고 확인하는 사람”이 결과적으로 더 빠르게 일합니다."
+      ],
+      tips: [
+        "작업 전 ‘위험요인 1개’만 소리 내어 공유해보세요. 팀 전체의 집중도가 올라갑니다.",
+        "보호구는 ‘착용’이 아니라 ‘정상 체결’까지가 완료입니다.",
+        "동선에는 장애물·요철이 없는지 먼저 정리하면 사고 확률이 줄어듭니다.",
+        "야간/저조도 작업은 조도 확보가 우선입니다. 조명 점검을 습관으로 만들어보세요.",
+        "임시 작업은 임시 대책이 아니라 ‘정식 절차’로 접근할수록 안전합니다.",
+        "급할수록 ‘정지 → 확인 → 진행’ 3단계를 지키면 실수가 줄어듭니다.",
+        "작업 전 장비 이상(소음/진동/느슨함) 여부를 짧게라도 확인해보세요.",
+        "안전 표지/경고 문구는 ‘있다’가 아니라 ‘보인다’가 중요합니다.",
+        "개구부·턱·단차 구간은 도색/표지로 먼저 눈에 들어오게 만들어보세요.",
+        "차량 동선과 보행 동선이 만나는 구간은 사전 통제가 효과적입니다."
+      ],
+      caution: [
+        "피로가 쌓이면 판단이 흐려질 수 있어요. 무리한 일정은 분할하고 휴식을 확보하세요.",
+        "‘잠깐이면 된다’가 가장 위험할 수 있습니다. 짧은 작업일수록 기본을 지키세요.",
+        "동료가 위험을 말해주면 즉시 멈추는 것이 가장 빠른 해결입니다.",
+        "장비의 작은 이상 신호(소음/진동/느슨함)는 즉시 점검 포인트입니다.",
+        "통로/출입문 주변은 차량·사람 동선이 겹치기 쉬우니 사전 통제가 필요합니다.",
+        "바닥이 젖는 환경(우천·잔설·청소 후)은 미끄럼 위험이 급증합니다.",
+        "시야가 가려지는 구간은 유도자/표지로 보완하는 것이 안전합니다.",
+        "‘보인다’고 생각해도 상대는 못 볼 수 있습니다. 신호·표지로 확인하세요."
+      ]
+    },
+    "재물운": {
+      titles: ["① 전체 흐름", "② 실천 팁", "③ 주의 포인트", "④ 오늘의 한 줄"],
+      flow: [
+        "올해는 ‘큰 한 방’보다 ‘꾸준한 관리’가 재물운을 키웁니다.",
+        "올해는 소비 패턴을 정리하면 생각보다 빠르게 여유가 생깁니다.",
+        "올해는 성급한 선택보다 기준을 세운 선택이 결과가 좋습니다.",
+        "올해는 ‘정리(구독/자동이체)’가 가장 강력한 재테크가 됩니다.",
+        "올해는 작은 절약이 복리처럼 쌓이는 흐름입니다.",
+        "올해는 목표를 ‘숫자’로 만들수록 돈 관리가 쉬워집니다.",
+        "올해는 “안 쓰는 것”보다 “잘 쓰는 것”이 중요한 해입니다.",
+        "올해는 계획한 지출이 늘어날수록 마음이 편해집니다."
+      ],
+      tips: [
+        "자동이체/구독을 한 번만 정리해도 매달 체감이 생깁니다.",
+        "지출은 ‘기록’보다 ‘분류’가 중요합니다: 고정/변동/비상.",
+        "충동구매는 24시간 보류 규칙만으로도 크게 줄어듭니다.",
+        "저축은 ‘월초 선저축’으로 바꾸면 성공률이 올라갑니다.",
+        "비상금은 ‘쉽게 못 꺼내는 곳’에 두는 게 가장 효과적입니다.",
+        "지출이 늘어나는 달은 미리 한도를 정해두면 마음이 편합니다.",
+        "포인트/쿠폰은 ‘한 곳에 모으기’만 해도 손실이 줄어듭니다.",
+        "비싼 선택은 ‘3번 비교’ 원칙이 실수를 줄여줍니다.",
+        "카드 사용은 ‘결제일=현금’이라고 생각하면 과소비가 줄어듭니다.",
+        "작은 수입도 ‘자동 분배(저축/생활/비상)’로 굳히면 안정됩니다."
+      ],
+      caution: [
+        "정보가 많을수록 불안해질 수 있어요. 한 가지 원칙을 세우고 유지하세요.",
+        "큰 결제 전에는 ‘필요/원함/지금’ 3가지를 체크해보세요.",
+        "급하게 결정하는 투자/구매는 피하고, 충분히 확인 후 진행하세요.",
+        "돈 이야기는 비교하면 피곤해집니다. 내 기준을 먼저 세우세요.",
+        "카드/할부는 ‘미래의 나’에게 부담이 될 수 있으니 횟수를 점검하세요.",
+        "‘한 번만’이 반복되면 고정지출이 됩니다. 작은 지출도 점검하세요.",
+        "리워드/할인에 끌리면 지출이 늘 수 있어요. 총액을 먼저 보세요.",
+        "지출 스트레스가 큰 날엔 결제 버튼을 잠깐 멈추는 게 도움 됩니다."
+      ]
+    },
+    "신년운": {
+      titles: ["① 전체 흐름", "② 실천 팁", "③ 주의 포인트", "④ 오늘의 한 줄"],
+      flow: [
+        "올해는 정리와 새 출발이 잘 맞는 해입니다. 먼저 비우면 속도가 붙습니다.",
+        "올해는 ‘작은 시작’이 큰 변화로 연결되는 흐름이 좋습니다.",
+        "올해는 루틴 하나를 고정하면 생활 전반이 안정됩니다.",
+        "올해는 배우는 만큼 바로 써먹을 기회가 생깁니다.",
+        "올해는 타이밍보다 ‘지속’이 성패를 가릅니다.",
+        "올해는 ‘정리 → 실행’ 순서로 갈수록 스트레스가 줄어듭니다.",
+        "올해는 작은 성취를 눈에 보이게 기록할수록 운이 붙습니다.",
+        "올해는 ‘나에게 맞는 속도’를 찾는 순간 편해집니다."
+      ],
+      tips: [
+        "새 습관은 ‘하루 10분’부터 시작하면 오래 갑니다.",
+        "해야 할 일은 3개로 줄이고, 가장 중요한 것부터 처리해보세요.",
+        "집·책상·파일 중 한 곳만 정리해도 머리가 맑아집니다.",
+        "기록(메모/체크리스트)이 늘어나면 실수가 줄어듭니다.",
+        "새해 목표는 ‘측정 가능’하게 만들수록 달성률이 올라갑니다.",
+        "불필요한 약속을 줄이고 휴식을 확보하면 컨디션이 좋아집니다.",
+        "아침/퇴근 후 ‘고정 루틴 1개’가 생활을 바꿉니다.",
+        "작은 성취를 바로 체크하면 동기 유지가 쉬워집니다.",
+        "새로운 도전은 ‘주 2회’처럼 빈도를 정해두면 꾸준해집니다.",
+        "정리할 항목을 한 번에 다 하지 말고 ‘구역 1개씩’ 나눠보세요."
+      ],
+      caution: [
+        "처음부터 완벽하게 하려 하면 지치기 쉽습니다. ‘꾸준함’을 우선하세요.",
+        "여러 목표를 한꺼번에 시작하면 흐름이 분산될 수 있어요.",
+        "SNS/뉴스 과다 소비는 에너지를 빼앗을 수 있어요. 시간 한도를 정해보세요.",
+        "과로 신호(수면 부족/집중 저하)가 오면 속도를 조절하세요.",
+        "정리 없이 확장하면 일이 늘어날 수 있어요. ‘정리 → 확장’ 순서를 추천합니다.",
+        "비교가 심해지면 자존감이 흔들릴 수 있어요. ‘내 페이스’를 기억하세요.",
+        "목표가 흐릿해지면 ‘왜 하는지’ 한 줄로 다시 적어보세요.",
+        "시작이 늦어져도 괜찮아요. ‘오늘 1%’가 올해를 바꿉니다."
+      ]
+    },
+    "가정운": {
+      titles: ["① 전체 흐름", "② 실천 팁", "③ 주의 포인트", "④ 오늘의 한 줄"],
+      flow: [
+        "올해는 ‘대화의 질’이 가정의 분위기를 좌우하는 흐름입니다.",
+        "올해는 서로의 피로를 이해할수록 관계가 부드러워집니다.",
+        "올해는 함께하는 시간을 짧게라도 자주 확보하면 안정감이 커집니다.",
+        "올해는 약속을 작게 잡고 지키는 편이 신뢰를 쌓습니다.",
+        "올해는 ‘역할 조율’이 스트레스를 줄여줍니다.",
+        "올해는 ‘말보다 행동’이 더 크게 전해지는 흐름입니다.",
+        "올해는 미리 공유한 일정이 갈등을 줄여줍니다.",
+        "올해는 ‘감사 표현’이 관계 운을 올려줍니다."
+      ],
+      tips: [
+        "하루에 5분만이라도 ‘오늘 어땠어?’를 물어보는 루틴이 도움이 됩니다.",
+        "집안일은 ‘도와줄게’보다 ‘내가 이걸 할게’가 더 명확합니다.",
+        "약속은 작게 잡고 꼭 지키는 편이 신뢰를 쌓습니다.",
+        "명절/행사 전에는 역할을 미리 나누면 갈등이 줄어듭니다.",
+        "가족 일정은 공유 캘린더/메모로 가시화하면 편해집니다.",
+        "칭찬은 구체적으로: ‘고마워’보다 ‘그거 해줘서 고마워’가 더 효과적입니다.",
+        "피곤한 날은 산책 10분이 대화를 부드럽게 해줄 수 있어요.",
+        "서로의 ‘쉬는 시간’을 존중하면 관계가 안정됩니다.",
+        "갈등은 ‘누가 맞나’보다 ‘어떻게 맞출까’로 접근하면 풀립니다.",
+        "짧은 연락(한 줄 메시지)만으로도 오해가 줄어듭니다."
+      ],
+      caution: [
+        "피곤한 날의 말 한마디가 크게 남을 수 있어요. 쉬고 말해도 늦지 않습니다.",
+        "기대치를 맞추려면 ‘추측’보다 ‘질문’이 필요합니다.",
+        "한쪽이 참기만 하면 쌓입니다. 작은 불편은 일찍 조율하세요.",
+        "행사/명절 뒤에는 충분한 휴식 시간을 확보하세요.",
+        "일정이 바쁠수록 ‘짧은 연락’이라도 유지하면 오해가 줄어듭니다.",
+        "서로의 기준을 ‘당연’으로 두면 충돌이 생깁니다. 합의가 필요합니다.",
+        "감정이 올라오면 대화의 속도를 늦추는 게 도움이 됩니다.",
+        "피로가 심한 날엔 결론을 미루는 것이 오히려 현명합니다."
+      ]
+    }
+  };
+
+  const luckyColors = ["하늘색","남색","초록","오프화이트","버건디","연보라","코랄","그레이","카키","검정","아이보리","민트","골드","레드"];
+  const luckyItems = {
+    "안전": ["체크리스트", "손전등", "안전화 끈 점검", "보호장갑", "메모장", "반사띠", "작업 전 점검표", "미끄럼 방지 패드"],
+    "재물운": ["가계부 앱", "자동이체 설정", "포인트/쿠폰 정리", "텀블러(절약)", "비상금 봉투", "장바구니 리스트", "지출 분류표", "예산 캘린더"],
+    "신년운": ["플래너", "정리함", "타이머(집중)", "루틴 스티커", "독서 노트", "체크리스트 카드", "작은 목표 보드", "습관 트래커"],
+    "가정운": ["공유 캘린더", "메모 자석", "사진 한 장", "따뜻한 차", "산책화", "장보기 리스트", "가족 약속 메모", "감사 메모"]
+  };
+
+  const punchLines = [
+    "한 번에 크게보다 하루에 작게",
+    "확인은 빠르게, 결정은 신중하게",
+    "꾸준함이 결국 이깁니다",
+    "지금의 습관이 올해를 만듭니다",
+    "작은 정리가 큰 여유를 만듭니다",
+    "짧은 대화가 큰 오해를 막습니다",
+    "오늘의 선택이 내일의 흐름을 만듭니다",
+    "기본이 최고의 효율입니다"
+  ];
+
+  function generate(){
+    const name = safe(document.getElementById('name').value) || "당신";
+    const by = parseInt(safe(document.getElementById('by').value), 10);
+    const bm = parseInt(safe(document.getElementById('bm').value), 10);
+    const bd = parseInt(safe(document.getElementById('bd').value), 10);
+    const keyword = document.getElementById('keyword').value;
+    const mode = document.getElementById('mode').value;
+
+    const v = validateBirth(by,bm,bd);
+    if (!v.ok){ alert(v.msg); return; }
+
+    const z = zodiacFromYear(by);
+    document.getElementById('title').textContent = `${name}님의 2026 운세 (${keyword})`;
+    document.getElementById('meta').textContent = `${by}-${pad2(bm)}-${pad2(bd)} · ${z ? z+"띠" : ""}`;
+
+    const baseKey = `${name}|${by}-${bm}-${bd}|${keyword}|2026`;
+    const seedKey = (mode === "fresh") ? `${baseKey}|${Date.now()}` : baseKey;
+    const rng = mulberry32(hashToSeed(seedKey));
+
+    const pack = sections[keyword];
+    const lines = [];
+
+    const luckIndex = clamp(Math.floor(rng()*101), 0, 100);
+    const color = pick(rng, luckyColors);
+    const item = pick(rng, luckyItems[keyword]);
+
+    // --- Build output with low repetition ---
+    lines.push(`${pack.titles[0]}`);
+    lines.push(`- ${pick(rng, openers[keyword])}`);
+    lines.push(`- ${pick(rng, pack.flow)}`);
+
+    lines.push(``);
+    lines.push(`${pack.titles[1]}`);
+    // pick unique tips
+    const usedTips = new Set();
+    for (let i=0;i<3;i++){
+      let t;
+      let guard=0;
+      do { t = pick(rng, pack.tips); guard++; } while (usedTips.has(t) && guard < 20);
+      usedTips.add(t);
+      lines.push(`- ${t}`);
+      if (rng() < 0.25) break; // sometimes 1~3개로 변동
+    }
+
+    lines.push(``);
+    lines.push(`${pack.titles[2]}`);
+    const usedC = new Set();
+    for (let i=0;i<2;i++){
+      let c; let guard=0;
+      do { c = pick(rng, pack.caution); guard++; } while (usedC.has(c) && guard < 20);
+      usedC.add(c);
+      lines.push(`- ${c}`);
+      if (rng() < 0.35) break; // sometimes 1~2개
+    }
+
+    lines.push(``);
+    lines.push(`${pack.titles[3]}`);
+    lines.push(`- 올해 행운지수: ${luckIndex}/100`);
+    lines.push(`- 행운색: ${color} / 추천 아이템: ${item}`);
+    lines.push(`- ${pick(rng, metaPhrases[keyword])}. “${pick(rng, punchLines)}”`);
+
+    document.getElementById('fortune').textContent = lines.join("\n");
+    document.getElementById('copyok').style.display = "none";
+  }
+
+  async function copyResult(){
+    const text = document.getElementById('fortune').innerText;
+    try{
+      await navigator.clipboard.writeText(text);
+      const el = document.getElementById('copyok');
+      el.style.display = "block";
+      setTimeout(()=> el.style.display="none", 1200);
+    }catch(e){
+      alert("복사에 실패했습니다. 브라우저 보안 설정을 확인하거나, 결과 텍스트를 드래그해 복사해 주세요.");
+    }
+  }
+
+  function resetAll(){
+    document.getElementById('name').value = "";
+    document.getElementById('by').value = "";
+    document.getElementById('bm').value = "";
+    document.getElementById('bd').value = "";
+    document.getElementById('keyword').value = "안전";
+    document.getElementById('mode').value = "stable";
+    document.getElementById('title').textContent = "결과";
+    document.getElementById('meta').textContent = "—";
+    document.getElementById('fortune').innerHTML = "왼쪽 정보를 입력하고 <b>운세 보기</b>를 눌러주세요.";
+    document.getElementById('copyok').style.display = "none";
+  }
+</script>
+</body>
+</html>
